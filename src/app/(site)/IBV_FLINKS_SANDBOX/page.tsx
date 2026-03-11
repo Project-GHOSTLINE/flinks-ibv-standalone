@@ -13,18 +13,16 @@ export default function IBVFlinksSandboxPage() {
     const stateToken = crypto.randomUUID()
     setState(stateToken)
 
-    // Build iframe URL with SANDBOX domain and customerId IN PATH
-    const customerId = '43387ca6-0391-4c82-857d-70d95f087ecb' // Sandbox Customer ID
-    const iframeDomain = 'https://toolbox-iframe.private.fin.ag'
-    // Add sandbox=true to callback URL to inform backend to use sandbox credentials
-    const redirectUrl = encodeURIComponent(`${window.location.origin}/ibv/callback?state=${stateToken}&sandbox=true`)
-    const finalUrl = `${iframeDomain}/v2/${customerId}/?demo=true&redirectUrl=${redirectUrl}&innerRedirect=false`
+    // Build iframe URL with PRODUCTION credentials (no more sandbox!)
+    const flinksConnectDomain = process.env.NEXT_PUBLIC_FLINKS_CONNECT_DOMAIN ||
+      'https://solutionargentrapide-iframe.private.fin.ag/v2/'
+    // Remove sandbox=true - using production now
+    const redirectUrl = encodeURIComponent(`${window.location.origin}/ibv/callback?state=${stateToken}`)
+    const finalUrl = `${flinksConnectDomain}?redirectUrl=${redirectUrl}&innerRedirect=false`
 
-    console.log('🏦 [FLINKS SANDBOX] Opening Connect iframe...')
-    console.log('📍 Customer ID:', customerId)
+    console.log('🏦 [FLINKS PRODUCTION] Opening Connect iframe...')
     console.log('🔗 Iframe URL:', finalUrl)
-    console.log('🎯 Look for: "Flinks Capital" in institution list')
-    console.log('✅ Demo mode: true')
+    console.log('🎯 Connect to your REAL bank account')
 
     setIframeUrl(finalUrl)
 
@@ -42,51 +40,39 @@ export default function IBVFlinksSandboxPage() {
       <div className="container mx-auto px-4 max-w-4xl">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-500 rounded-full mb-4">
-            <TestTube className="text-white" size={32} />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-green-600 rounded-full mb-4">
+            <Shield className="text-white" size={32} />
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Connexion bancaire sécurisée (SANDBOX - Test)
+            Connexion bancaire sécurisée
           </h1>
           <p className="text-xl text-gray-600">
-            Environnement de test Flinks avec Flinks Capital
+            Vérification bancaire instantanée avec Flinks
           </p>
-          <div className="mt-4 inline-flex items-center gap-2 bg-yellow-50 border border-yellow-200 rounded-lg px-4 py-2">
-            <TestTube className="text-yellow-600" size={20} />
-            <span className="text-sm text-yellow-800 font-semibold">
-              MODE SANDBOX - Aucune vraie banque connectée
+          <div className="mt-4 inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-lg px-4 py-2">
+            <Shield className="text-green-600" size={20} />
+            <span className="text-sm text-green-800 font-semibold">
+              ENVIRONNEMENT DE PRODUCTION - Vraies banques
             </span>
           </div>
         </div>
 
-        {/* Test Credentials */}
-        <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-6 mb-8">
-          <h2 className="text-xl font-semibold text-blue-900 mb-4 flex items-center gap-2">
-            <Shield className="text-blue-600" size={24} />
-            Credentials de test
+        {/* Instructions */}
+        <div className="bg-green-50 border-2 border-green-300 rounded-lg p-6 mb-8">
+          <h2 className="text-xl font-semibold text-green-900 mb-4 flex items-center gap-2">
+            <Shield className="text-green-600" size={24} />
+            Connexion bancaire réelle
           </h2>
-          <div className="space-y-3">
-            <div>
-              <p className="text-sm text-blue-700 font-medium">Institution:</p>
-              <p className="text-lg font-mono bg-white px-3 py-2 rounded border border-blue-200">
-                FlinksCapital
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-blue-700 font-medium">Username (essayer les 2):</p>
-              <p className="text-lg font-mono bg-white px-3 py-2 rounded border border-blue-200">
-                greatday_nomfa <span className="text-xs text-gray-500">(recommandé - sans MFA)</span>
-              </p>
-              <p className="text-sm font-mono bg-white px-3 py-2 rounded border border-blue-200 mt-2">
-                Greatday <span className="text-xs text-gray-500">(avec MFA)</span>
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-blue-700 font-medium">Password:</p>
-              <p className="text-lg font-mono bg-white px-3 py-2 rounded border border-blue-200">
-                Everyday
-              </p>
-            </div>
+          <div className="space-y-3 text-green-800">
+            <p className="font-medium">
+              Vous allez connecter votre VRAIE banque avec vos credentials bancaires.
+            </p>
+            <ul className="list-disc list-inside space-y-2 ml-4">
+              <li>Toutes les banques canadiennes sont supportées</li>
+              <li>Connexion sécurisée via Flinks (certifié bancaire)</li>
+              <li>Vos credentials ne sont jamais stockés</li>
+              <li>Accès lecture seule à vos comptes</li>
+            </ul>
           </div>
         </div>
 
@@ -123,11 +109,11 @@ export default function IBVFlinksSandboxPage() {
 
           <button
             onClick={handleOpenFlinks}
-            className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-8 py-4 rounded-lg
+            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-4 rounded-lg
                      transition-colors duration-200 inline-flex items-center gap-2"
           >
-            <TestTube size={20} />
-            Ouvrir Flinks Connect (Sandbox)
+            <Shield size={20} />
+            Connecter ma banque
           </button>
 
           {state && (
@@ -138,15 +124,15 @@ export default function IBVFlinksSandboxPage() {
         </div>
 
         {/* How it works */}
-        <div className="mt-12 bg-green-50 border border-green-200 rounded-lg p-6">
-          <h3 className="font-semibold text-green-900 mb-3">Comment tester?</h3>
-          <ol className="list-decimal list-inside space-y-2 text-green-800">
-            <li>Cliquez sur &quot;Ouvrir Flinks Connect (Sandbox)&quot;</li>
-            <li>Cherchez &quot;FlinksCapital&quot; dans la liste (un seul mot)</li>
-            <li>Username: <code className="bg-white px-2 py-1 rounded">greatday_nomfa</code> ou <code className="bg-white px-2 py-1 rounded">Greatday</code></li>
-            <li>Password: <code className="bg-white px-2 py-1 rounded">Everyday</code></li>
+        <div className="mt-12 bg-blue-50 border border-blue-200 rounded-lg p-6">
+          <h3 className="font-semibold text-blue-900 mb-3">Comment ça fonctionne?</h3>
+          <ol className="list-decimal list-inside space-y-2 text-blue-800">
+            <li>Cliquez sur &quot;Connecter ma banque&quot;</li>
+            <li>Cherchez votre institution bancaire dans la liste</li>
+            <li>Entrez vos identifiants bancaires (connexion sécurisée)</li>
+            <li>Complétez l&apos;authentification (2FA si requis)</li>
             <li>Vous serez redirigé vers la page de confirmation</li>
-            <li>Les données fictives seront enregistrées dans Supabase</li>
+            <li>Vos données bancaires seront analysées automatiquement</li>
           </ol>
         </div>
 
@@ -170,12 +156,12 @@ export default function IBVFlinksSandboxPage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-2xl w-full max-w-6xl h-[90vh] flex flex-col">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-4 border-b bg-yellow-50">
+            <div className="flex items-center justify-between p-4 border-b bg-green-50">
               <div className="flex items-center gap-3">
-                <TestTube className="text-yellow-600" size={24} />
+                <Shield className="text-green-600" size={24} />
                 <div>
-                  <h3 className="text-lg font-semibold">Flinks Connect - SANDBOX</h3>
-                  <p className="text-sm text-gray-600">Mode test avec Flinks Capital</p>
+                  <h3 className="text-lg font-semibold">Flinks Connect - Connexion bancaire</h3>
+                  <p className="text-sm text-gray-600">Sélectionnez votre institution</p>
                 </div>
               </div>
               <button
@@ -192,7 +178,7 @@ export default function IBVFlinksSandboxPage() {
               <iframe
                 src={iframeUrl}
                 className="w-full h-full border-0"
-                title="Flinks Connect Sandbox"
+                title="Flinks Connect"
                 allow="camera; microphone"
                 sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-top-navigation allow-top-navigation-by-user-activation"
               />
