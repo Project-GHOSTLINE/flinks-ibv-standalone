@@ -13,12 +13,13 @@ export default function IBVFlinksSandboxPage() {
     const stateToken = crypto.randomUUID()
     setState(stateToken)
 
-    // Build iframe URL with SANDBOX domain
+    // Build iframe URL with SANDBOX domain and customerId
+    const customerId = '43387ca6-0391-4c82-857d-70d95f087ecb' // Sandbox Customer ID
     const flinksConnectDomain = process.env.NEXT_PUBLIC_FLINKS_SANDBOX_CONNECT_DOMAIN ||
       'https://toolbox-iframe.private.fin.ag/v2/?demo=true'
     // Add sandbox=true to callback URL to inform backend to use sandbox credentials
     const redirectUrl = encodeURIComponent(`${window.location.origin}/ibv/callback?state=${stateToken}&sandbox=true`)
-    setIframeUrl(`${flinksConnectDomain}&redirectUrl=${redirectUrl}&innerRedirect=false`)
+    setIframeUrl(`${flinksConnectDomain}&redirectUrl=${redirectUrl}&customerId=${customerId}&innerRedirect=false`)
 
     // Open modal
     setShowModal(true)
