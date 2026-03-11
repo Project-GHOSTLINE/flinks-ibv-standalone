@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
 
     // Parse request body
     const body = await request.json()
-    const { loginId, state, useSandbox } = body
+    const { loginId, state } = body
 
     // Validation
     if (!loginId || !state) {
@@ -37,29 +37,14 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Auto-detect environment and select appropriate credentials
-    const isUsingSandbox = useSandbox === true
-
-    // Get env vars based on environment
-    const customerId = isUsingSandbox
-      ? (process.env.FLINKS_SANDBOX_CUSTOMER_ID || process.env.FLINKS_CUSTOMER_ID)
-      : process.env.FLINKS_CUSTOMER_ID
-
-    const apiDomain = isUsingSandbox
-      ? (process.env.FLINKS_SANDBOX_API_DOMAIN || 'https://toolbox-api.private.fin.ag')
-      : process.env.FLINKS_API_DOMAIN
-
-    const apiKey = isUsingSandbox
-      ? (process.env.FLINKS_SANDBOX_API_KEY || process.env.FLINKS_X_API_KEY)
-      : process.env.FLINKS_X_API_KEY
-
-    const authorizeToken = isUsingSandbox
-      ? process.env.FLINKS_SANDBOX_AUTHORIZE_TOKEN
-      : process.env.FLINKS_AUTHORIZE_TOKEN
+    // Always use PRODUCTION credentials
+    const customerId = process.env.FLINKS_CUSTOMER_ID
+    const apiDomain = process.env.FLINKS_API_DOMAIN
+    const apiKey = process.env.FLINKS_X_API_KEY
+    const authorizeToken = process.env.FLINKS_AUTHORIZE_TOKEN
 
     if (!customerId || !apiDomain || !apiKey) {
       console.error('Missing Flinks env vars:', {
-        environment: isUsingSandbox ? 'SANDBOX' : 'PRODUCTION',
         customerId,
         apiDomain,
         apiKey: !!apiKey,
@@ -71,7 +56,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    console.log('[IBV] Environment:', isUsingSandbox ? 'SANDBOX' : 'PRODUCTION')
+    console.log('[IBV] Environment: PRODUCTION')
     console.log('[IBV] Customer ID:', customerId)
     console.log('[IBV] API Domain:', apiDomain)
     console.log('[IBV] Authorize Token configured:', !!authorizeToken)
