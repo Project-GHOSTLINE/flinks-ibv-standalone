@@ -69,13 +69,16 @@ export default function IBVFlinksSandboxPage() {
             <div>
               <p className="text-sm text-blue-700 font-medium">Institution:</p>
               <p className="text-lg font-mono bg-white px-3 py-2 rounded border border-blue-200">
-                Flinks Capital
+                FlinksCapital
               </p>
             </div>
             <div>
-              <p className="text-sm text-blue-700 font-medium">Username:</p>
+              <p className="text-sm text-blue-700 font-medium">Username (essayer les 2):</p>
               <p className="text-lg font-mono bg-white px-3 py-2 rounded border border-blue-200">
-                Greatday
+                greatday_nomfa <span className="text-xs text-gray-500">(recommandé - sans MFA)</span>
+              </p>
+              <p className="text-sm font-mono bg-white px-3 py-2 rounded border border-blue-200 mt-2">
+                Greatday <span className="text-xs text-gray-500">(avec MFA)</span>
               </p>
             </div>
             <div>
@@ -139,8 +142,8 @@ export default function IBVFlinksSandboxPage() {
           <h3 className="font-semibold text-green-900 mb-3">Comment tester?</h3>
           <ol className="list-decimal list-inside space-y-2 text-green-800">
             <li>Cliquez sur &quot;Ouvrir Flinks Connect (Sandbox)&quot;</li>
-            <li>Cherchez &quot;Flinks Capital&quot; dans la liste</li>
-            <li>Username: <code className="bg-white px-2 py-1 rounded">Greatday</code></li>
+            <li>Cherchez &quot;FlinksCapital&quot; dans la liste (un seul mot)</li>
+            <li>Username: <code className="bg-white px-2 py-1 rounded">greatday_nomfa</code> ou <code className="bg-white px-2 py-1 rounded">Greatday</code></li>
             <li>Password: <code className="bg-white px-2 py-1 rounded">Everyday</code></li>
             <li>Vous serez redirigé vers la page de confirmation</li>
             <li>Les données fictives seront enregistrées dans Supabase</li>
