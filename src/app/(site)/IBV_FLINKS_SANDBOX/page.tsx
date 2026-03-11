@@ -18,7 +18,15 @@ export default function IBVFlinksSandboxPage() {
     const iframeDomain = 'https://toolbox-iframe.private.fin.ag'
     // Add sandbox=true to callback URL to inform backend to use sandbox credentials
     const redirectUrl = encodeURIComponent(`${window.location.origin}/ibv/callback?state=${stateToken}&sandbox=true`)
-    setIframeUrl(`${iframeDomain}/v2/${customerId}/?demo=true&redirectUrl=${redirectUrl}&innerRedirect=false`)
+    const finalUrl = `${iframeDomain}/v2/${customerId}/?demo=true&redirectUrl=${redirectUrl}&innerRedirect=false`
+
+    console.log('🏦 [FLINKS SANDBOX] Opening Connect iframe...')
+    console.log('📍 Customer ID:', customerId)
+    console.log('🔗 Iframe URL:', finalUrl)
+    console.log('🎯 Look for: "Flinks Capital" in institution list')
+    console.log('✅ Demo mode: true')
+
+    setIframeUrl(finalUrl)
 
     // Open modal
     setShowModal(true)
