@@ -16,7 +16,6 @@ function CallbackContent() {
   useEffect(() => {
     const loginId = searchParams.get('loginId')
     const state = searchParams.get('state')
-    const useSandbox = searchParams.get('sandbox') === 'true'
 
     if (!loginId || !state) {
       setStatus('error')
@@ -30,7 +29,7 @@ function CallbackContent() {
         const res = await fetch('/api/ibv/complete', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ loginId, state, useSandbox })
+          body: JSON.stringify({ loginId, state })
         })
 
         const data = await res.json()
